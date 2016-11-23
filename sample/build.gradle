@@ -1,0 +1,35 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        // the latest version of the android-apt plugin
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
+
+    defaultConfig {
+        minSdkVersion 11
+        targetSdkVersion 22
+        versionCode 3
+        versionName "2.0.0"
+    }
+}
+
+dependencies {
+    compile project(':pdfViewer')
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    apt "org.androidannotations:androidannotations:4.1.0"
+    compile "org.androidannotations:androidannotations-api:4.1.0"
+}

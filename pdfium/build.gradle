@@ -1,0 +1,107 @@
+//apply plugin: 'com.android.library'
+//
+//android {
+//    compileSdkVersion 24
+//    buildToolsVersion "24.0.2"
+//
+//    defaultConfig {
+//        minSdkVersion 9
+//        targetSdkVersion 22
+//        versionCode 1
+//        versionName "1.4.0"
+//
+//        ndk{
+//            moduleName "pdfium"   //生成的so名字
+//            abiFilters "armeabi-v7a"  //输出指定三种abi体系结构下的so库。
+//            ldLibs "log", "android", "jnigraphics"
+//            stl "stlport_static"
+//            cFlags "-fexceptions -DHAVE_PTHREADS"
+//        }
+//    }
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//    sourceSets.main {
+////        jniLibs.srcDirs 'src/main/jniLibs' //设置目标的so存放路径
+//        jniLibs.srcDirs 'src/main/other/lib' //设置目标的so存放路径
+//        jni.srcDirs 'src/main/jni'
+//        //jni.srcDirs = []//设置禁止gradle生成Android.mk
+//    }
+//
+//}
+
+apply plugin: 'com.android.model.library'
+
+model{
+    android {
+        compileSdkVersion = 24
+        buildToolsVersion = "24.0.2"
+
+        defaultConfig {
+            minSdkVersion.apiLevel 9
+            targetSdkVersion.apiLevel 22
+            versionCode 1
+            versionName "1.4.0"
+        }
+    }
+    android.ndk{
+        moduleName "jniPdfium"   //生成的so名字
+        abiFilters.addAll(["armeabi-v7a"]) //输出指定三种abi体系结构下的so库
+        ldLibs.addAll(["log", "android", "jnigraphics"])
+        stl "stlport_static"
+        cppFlags.add("-fexceptions")
+        cppFlags.add("-DHAVE_PTHREADS")
+    }
+
+    android.buildTypes {
+        release {
+            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles.add(file("proguard-rules.txt"))
+        }
+    }
+
+    repositories {
+        prebuilt(PrebuiltLibraries) {
+            libmodpdfium{
+                headers.srcDir "src/main/jni"
+                binaries.withType(SharedLibraryBinary) {
+                    sharedLibraryFile = file("src/main/jni/lib/${targetPlatform.getName()}/libmodpdfium.so")
+                }
+            }
+        }
+    }
+
+    android.sources {
+        main{
+            jni {
+                dependencies {
+                    library "libmodpdfium"
+                }
+                source {
+                    srcDirs "src/main/jni"
+                }
+            }
+            jniLibs {
+//                dependencies {
+//                    library "libmodpdfium"
+//                }
+                source {
+                    srcDir "src/main/jniLibs"
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:support-v4:24.2.1'
+}
+
+
+

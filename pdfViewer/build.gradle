@@ -1,0 +1,19 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion '24.0.2'
+
+    defaultConfig {
+        minSdkVersion 11
+        targetSdkVersion 22
+        versionCode 1
+        versionName "2.1.0"
+    }
+}
+
+dependencies {
+    //compile 'com.github.barteksc:pdfium-android:1.4.0'
+    compile project(':pdfium')
+    compile 'com.android.support:support-v4:24.2.1'
+}
