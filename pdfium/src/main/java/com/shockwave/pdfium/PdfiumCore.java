@@ -17,8 +17,8 @@ public class PdfiumCore {
     private static final String TAG = PdfiumCore.class.getName();
 
     static {
-        System.loadLibrary("jniPdfium");
         System.loadLibrary("modpdfium");
+        System.loadLibrary("jniPdfium");
     }
 
     private native long nativeOpenDocument(int fd, String password);

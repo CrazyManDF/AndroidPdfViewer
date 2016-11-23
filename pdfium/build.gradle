@@ -49,7 +49,7 @@ model{
     }
     android.ndk{
         moduleName "jniPdfium"   //生成的so名字
-        abiFilters.addAll(["armeabi-v7a"]) //输出指定三种abi体系结构下的so库
+        abiFilters.addAll(["armeabi-v7a", "x86"]) //输出指定三种abi体系结构下的so库
         ldLibs.addAll(["log", "android", "jnigraphics"])
         stl "stlport_static"
         cppFlags.add("-fexceptions")
